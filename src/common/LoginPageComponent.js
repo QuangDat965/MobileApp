@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet,Animated , TouchableOpacity, Alert } from 'react-native';
-import url from '../Constan/Request';
+import url from '../Constant/Request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class LoginPageComponent extends Component {
@@ -20,7 +20,7 @@ export default class LoginPageComponent extends Component {
     // }).start();
   }
   handleSubmit =  () => {
-    fetch(url+"Visitor/signIn", {
+    fetch(url+"auth/signin", {
         method: 'POST', //phương thức request
         headers: { //header của request
           'Content-Type': 'application/json',
@@ -32,21 +32,18 @@ export default class LoginPageComponent extends Component {
         }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
       })
       .then(response => response.json())
-      .then(  async json => {
+      .then(async json => {
         console.log('Response:', json);
         if(json.code==0){
             await AsyncStorage.setItem('token', String(json.token))
-            await AsyncStorage.setItem('id', String(json.value))
             this.props.navigation.navigate('ViewFarmComponent')
         }
         else if(json.code ==-1){
-            Alert.alert('sai mat khau');
+            Alert.alert('Sai mật khẩu');
         }
       })
       .catch(error => {
-        
         console.error('Error:', error);
-       
       });
 
     
