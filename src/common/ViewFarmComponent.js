@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Button, Image,
   ScrollView,TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import url from '../Constan/Request';
+import url from '../Constant/Request';
 
 class  ViewFarmComponent extends Component {
   constructor(props) {
