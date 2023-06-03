@@ -45,8 +45,9 @@ export default class LoginPageComponent extends Component {
       .catch(error => {
         console.error('Error:', error);
       });
-
-    
+  }
+  handlePressToRegister = () => {
+    this.props.navigation.navigate('Register')
   }
  
   render() {
@@ -55,6 +56,7 @@ export default class LoginPageComponent extends Component {
       };
     return (
       <View style={styles.container}>
+         
          {/* <Animated.Text style={[styles.label, animatedStyle]}>Hello, world!</Animated.Text> */}
         <Text style={styles.heading}>Login</Text>
         <TextInput
@@ -73,7 +75,12 @@ export default class LoginPageComponent extends Component {
         <TouchableOpacity onPress={() => this.handleSubmit()}  style={styles.button}>  
         <Text>Login</Text>     
         </TouchableOpacity>
-        
+        <TouchableOpacity onPress={this.handlePressToRegister} style = {styles.FogotAccount}>
+        <Text style={{ color: 'blue' }}>Bạn chưa có tài khoản?</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.handlePressToFogotAccount} style = {styles.FogotAccount}>
+        <Text style={{ color: 'blue' }}>Quên mật khẩu?</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -115,4 +122,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginHorizontal: 5,
   },
+  FogotAccount: {
+    marginTop: 20
+  }
 });
