@@ -12,7 +12,7 @@ export default function App() {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName="Register">
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Register" component={RegisterComponent} options={{ headerShown: false }}  />
           <Stack.Screen name="Login" component={LoginPageComponent} options={{ headerShown: false }}  />
           <Stack.Screen name="ViewFarmComponent" component={ViewFarmComponent} options={{ headerShown: false }}  />

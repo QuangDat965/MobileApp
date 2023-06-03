@@ -16,42 +16,50 @@ export default class RegisterComponent extends Component{
             numberPhone: "",
         };
     }
-    
     handleRegister = () => {
         fetch(url + "auth/signup",{
           method : 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + "",
           },
           body: JSON.stringify({
             "email": this.state.email,
             "fistName": this.state.firstName,
             "lastName": this.state.lastName,
-            "confirmPassWord": this.state.confirmPassWord,
+            "password": this.state.password,
+            "confirmPassWord": this.state.confirmPassword,
             "numberPhone": this.state.numberPhone,
           }),
-          
-
         })
         .then(response => response.json())
-          .then(async json => {
-            if(json.code==0){
-              this.props.navigation.navigate('Login')
+        .then(async json => {
+          console.log('Response:', json);
+          if(json.code==0){
+            await AsyncStorage.setItem('token', String(json.token))
+            this.props.navigation.navigate('ViewFarmComponent')
           }
           else if(json.code ==-1){
               Alert.alert('Dang ki khong thanh cong');
           }
-          }).catch(error => {
-          console.error('Error:', error);
+        }).catch(error => {
+        console.error('Error:', error);
         });
-    
     }
+    handleGoBack = () => {
+      this.props.navigation.navigate('Login')
+    }
+    
     render(){
         return(
-            <View style = {styles.container}>
-                
+          <>
+          <TouchableOpacity onPress={() => this.handleGoBack()}>
+              <Image source={require('../../../assets/backpage.png')}
+                style={{ width: 50, height: 50, top: 10}}/>
+                </TouchableOpacity>
+          <View style = {styles.container}>
                 <Image source={require('../../../assets/GardenManager.png')}
-                style={{ width: 400, height: 200 }}/>
+                style={{ width: 400, height: 200, }}/>
 
                 <Text style={styles.heading}>Register</Text>
                 <TextInput
@@ -101,6 +109,8 @@ export default class RegisterComponent extends Component{
                 </TouchableOpacity>
                 
             </View>
+          </>
+            
         );
     }
 }
