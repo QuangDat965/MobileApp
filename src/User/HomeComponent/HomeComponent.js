@@ -1,30 +1,32 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet,Animated , TouchableOpacity, Alert,ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet,Animated , TouchableOpacity, Alert,ScrollView,Image } from 'react-native';
 import url from '../../Constant/Request';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class HomeComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      controller: 1,
         menu: [{
             Id: 1,
-            Icon:"mmm",
+            Icon:require("../../../assets/farmHome.png"),
             Title: "Quản lí nông trại",
             DateCreate: "2022-02-01"
         },
         {
             Id: 2,
-            Icon:"mmm",
+            Icon:require("../../../assets/deviceHome.png"),
             Title: "Quản lí thiết bị",
             DateCreate: "2022-02-01"
         },{
             Id:3,
-            Icon:"mmm",
+            Icon:require("../../../assets/notifyHome.png"),
             Title: "Thông báo",
             DateCreate: "2022-02-01"
         },{
             Id:4,
-            Icon:"mmm",
+            Icon:require("../../../assets/weatherHome.png"),
             Title: "Thời tiết",
             DateCreate: "2022-02-01"
         },
@@ -33,7 +35,7 @@ export default class HomeComponent extends Component {
     };
   }
   componentDidMount() {
-    this.fetchUser();
+   
   }
 
   fetchUser() {
@@ -57,42 +59,61 @@ export default class HomeComponent extends Component {
      
     });
   }
+  handleController= (number) => {
+    if(number==1){
+      this.setState({controller:1})
+    }
+    if(number==2){
+      this.setState({controller:2})
+
+    }
+    if(number==3){
+      this.setState({controller:3})
+
+    }
+  }
  
   render() {
    
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-            <Text style={styles.text}>Plant Manager</Text>
+           <Text style={styles.text}>Plant Manager</Text>
         </View>
         <View style={styles.body}>
-          <View style = {styles.infor}>
-            <View style ={styles.image}>
-            </View>
-            <View style={styles.boxname}><Text>HI am hubert</Text></View>          
+        <View style={styles.infor}>
+          <View style ={styles.avata}>
+            <Image source={require("../../../assets/Avata/ronaldo.jpg")} style={{width:"100%", height:'100%',aspectRatio: 1, resizeMode:'cover' }}/>
           </View>
-          <ScrollView style={{padding: 70}}>
-                
-                <View style={styles.item}>
-                    <View style={styles.itemicon}></View>
-                    <Text style={styles.itemtext}>ABC</Text>
-                </View>
-                <View style={styles.item}>
-                    <View style={styles.itemicon}></View>
-                    <Text style={styles.itemtext}>ABC</Text>
-                </View>
-                <View style={styles.item}>
-                    <View style={styles.itemicon}></View>
-                    <Text style={styles.itemtext}>ABC</Text>
-                </View>
-                <View style={styles.item}>
-                    <View style={styles.itemicon}></View>
-                    <Text style={styles.itemtext}>ABC</Text>
-                </View>
-            </ScrollView>
-            
+          <Text style={styles.boxname}>My name</Text>
         </View>
-        <View style={styles.footer}></View>
+        <View style={styles.itemList} >
+          {this.state.menu.map((e,i)=> {
+           return ( <View key={i} style={styles.item}>
+            <TouchableOpacity style= {styles.intemImg}>
+            <Image source={e.Icon} style={{width: "100%", height: "100%",aspectRatio: 1}} />
+            </TouchableOpacity>                
+                <Text>{e.Title}</Text>
+              </View>)
+          })}
+        </View>
+        </View>
+        <View style={styles.footer}>
+          <View style ={styles.boxfooter}>
+            <TouchableOpacity style= {styles.col} onPress={()=>this.handleController(1)}>
+            <Icon name="home" size={30} color={this.state.controller==1? "#18F33B": "#000"} />   
+            <Text style={{ color: this.state.controller === 1 ? "#18F33B" : "#000" }}>Trang chủ</Text>
+            </TouchableOpacity >
+            <TouchableOpacity style= {styles.col} onPress={()=>this.handleController(2)}>
+            <Icon name="search" size={30} color={this.state.controller==2? "#18F33B": "#000"} />   
+            <Text style={{ color: this.state.controller === 2 ? "#18F33B" : "#000" }}>Tìm kiếm</Text>
+            </TouchableOpacity>
+            <TouchableOpacity  style= {styles.col} onPress={()=>this.handleController(3)}>
+            <Icon name="user" size={30} color={this.state.controller==3? "#18F33B": "#000"} />   
+            <Text style={{ color: this.state.controller === 3 ? "#18F33B" : "#000" }}>Profile</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         
       </View>
     );
@@ -100,12 +121,28 @@ export default class HomeComponent extends Component {
 }
 
 const styles = StyleSheet.create({
+  col: {
+    flex: 1,
+    textAlign: 'center',
+    alignItems:'center'
+  },
+  boxfooter: {
+    borderWidth: 2,
+    borderColor: "#ccc",
+    borderRadius: 100,
+    height: 70,
+    flexDirection: 'row'
+  },
   container: {
-    height: '100%',
-    width: '100%',
+    padding: 8,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F3FBFB',
+    width : '100%',
+    height: "100%"
   },
   header: {
-    flex: 0.1,
     width: '100%',
     height: "15%",
     backgroundColor: "#1DB90F",
@@ -116,50 +153,70 @@ const styles = StyleSheet.create({
   },
   body: {
     height: "70%",
-    flex: 0.8
+    width: "100%"
   },
   footer: {
-    flex: 0.1,
-    height: "15%",
-    width: "100%",
-    backgroundColor:'blue'
-  },
-  item: {
-    width: 70,
-    height: 800,
-    backgroundColor: 'red'
+    width: "95%",
+    height:"15%",
+    backgroundColor:'F3FBFB',
+    
+
   },
   text: {
-    fontFamily: '',
-    fontWeight: 600,
+    fontFamily: 'sans-serif',
+    fontWeight: 800,
     color: '#fff',
+    fontSize: 16
   },
   infor: {
     width: "100%",
-    height: 40,
-    backgroundColor: "#ccc",
-    padding: 2
-
+    backgroundColor: "#fff",
+    height: 80,
+    justifyContent: 'center',
+    marginTop: 10
   },
-  image: {
-    width: 36,
-    height: 36,
+  avata: {
+    width: 60,
+    height: 60,
     borderRadius: 100,
     backgroundColor: "blue",
     marginLeft: 10,
-    position: 'absolute'
+    position: 'absolute',
+    overflow:'hidden'
   },
   boxname: {
-    position: 'absolute',
-    marginLeft: 60,
-    height: 36,
-    alignItems: 'center',
-    justifyContent: "center"
-  },
-  itemicon:{
+    marginLeft: 100,
+    fontWeight: 800,
+    fontFamily: 'sans-serif'
 
   },
-  itemtext: {
+  itemList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  item: {
+    backgroundColor: "#F9F5F5",
+    width: 150,
+    height: 150,
+    margin: 10,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:20,
 
-  }
+
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5
+  },
+  intemImg:{
+    width: "100%",
+    height:130,
+    backgroundColor: "#fff",
+    alignItems:'center'
+  },
+  itemTitle: {
+
+  },
 });
