@@ -38,7 +38,7 @@ export default class RegisterComponent extends Component{
           if(json.code==0){
             await AsyncStorage.setItem('token', String(json.token))
             Alert.alert('Dang ki thanh cong');
-            this.props.navigation.navigate('ViewFarmComponent')
+            this.props.navigation.navigate('HomeComponent')
           }
           else if(json.code ==-1){
               Alert.alert('Dang ki khong thanh cong');

@@ -7,6 +7,7 @@ import LoginPageComponent from './src/common/LoginPageComponent';
 import DataDetailsComponent from './src/common/DataDetailsComponent';
 import ViewSmallholdingComponent from './src/common/ViewSmallHoldingComponent';
 import ViewFarmComponent from './src/common/ViewFarmComponent';
+import HomeComponent from './src/User/HomeComponent/HomeComponent';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -14,6 +15,7 @@ export default function App() {
     <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Register" component={RegisterComponent} options={{ headerShown: false }}  />
+          <Stack.Screen name="HomeComponent" component={HomeComponent} options={{ headerShown: false }}  />
           <Stack.Screen name="Login" component={LoginPageComponent} options={{ headerShown: false }}  />
           <Stack.Screen name="ViewFarmComponent" component={ViewFarmComponent} options={{ headerShown: false }}  />
           <Stack.Screen name="DataDetailsComponent" component={DataDetailsComponent} options={{ headerShown: false }}  />
