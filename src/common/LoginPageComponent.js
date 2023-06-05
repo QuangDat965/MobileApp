@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet,Animated , TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet,Animated , TouchableOpacity, Alert,ActivityIndicator } from 'react-native';
 import url from '../Constant/Request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from './Loading';
 
 export default class LoginPageComponent extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export default class LoginPageComponent extends Component {
     this.state = {
       email: '',
       password: '',
-      animatedValue: new Animated.Value(-100),
+      isLoading: false,
     };
   }
   componentDidMount() {
@@ -19,45 +20,61 @@ export default class LoginPageComponent extends Component {
     //   useNativeDriver: true, // để sử dụng native driver cho performance tốt hơn
     // }).start();
   }
-  handleSubmit =  () => {
+  callApi(){
+    this.setState({isLoading: true});
     fetch(url+"auth/signin", {
-        method: 'POST', //phương thức request
-        headers: { //header của request
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + "",
-        },
-        body: JSON.stringify({
-            "email": this.state.email,
-            "password": this.state.password
-        }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
-      })
-      .then(response => response.json())
-      .then(async json => {
-        console.log('Response:', json);
-        if(json.code==0){
-            await AsyncStorage.setItem('token', String(json.token))
-            this.props.navigation.navigate('HomeComponent')
-        }
-        else if(json.code ==-1){
-            Alert.alert('Sai mật khẩu');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+      method: 'POST', //phương thức request
+      headers: { //header của request
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + "",
+      },
+      body: JSON.stringify({
+          "email": this.state.email,
+          "password": this.state.password
+      }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
+    })
+    .then(response => response.json())
+    .then(async json => {
+      console.log('Response:', json);
+      if(json.code==0){
+          await AsyncStorage.setItem('token', String(json.token))
+          this.props.navigation.navigate('HomeComponent')
+      }
+      else if(json.code ==-1){
+      this.setState({isLoading:false})
+      Alert.alert('Sai mat khau');
+      }
+      else {
+      this.setState({isLoading:false})
+      Alert.alert('Sai mat khau');
+
+        
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    })
+    .finally(p=>{
+      this.setState({isLoading:false})
+    });
+  }
+  handleSubmit =  () => {
+    if(this.state.email.length > 3 && this.state.password.length > 3){
+      this.callApi();
+    }
+    else{
+      Alert.alert("vui long nhap tk mk")
+    }
+   
   }
   handlePressToRegister = () => {
     this.props.navigation.navigate('Register')
   }
  
   render() {
-    const animatedStyle = {
-        transform: [{ translateX: this.state.animatedValue }],
-      };
     return (
       <View style={styles.container}>
-         
-         {/* <Animated.Text style={[styles.label, animatedStyle]}>Hello, world!</Animated.Text> */}
+        <Loading isLoading={this.state.isLoading}/>
         <Text style={styles.heading}>Login</Text>
         <TextInput
           style={styles.input}
