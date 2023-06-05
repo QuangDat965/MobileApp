@@ -153,7 +153,9 @@ const styles = StyleSheet.create({
   },
   body: {
     height: "70%",
-    width: "100%"
+    width: "100%",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   footer: {
     width: "95%",
@@ -193,6 +195,8 @@ const styles = StyleSheet.create({
   itemList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    width: 350,
+    alignItems: 'center'
   },
   item: {
     backgroundColor: "#F9F5F5",
