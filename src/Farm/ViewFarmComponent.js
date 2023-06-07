@@ -21,7 +21,9 @@ class  ViewFarmComponent extends Component {
       method: 'GET', //phương thức request
       headers: { //header của request
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + await AsyncStorage.getItem('token'),
+        'Authorization': 'Bearer ' +await AsyncStorage.getItem('token') ,
+        // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6ImI0MTEyOTA0LTZlMDctNDM5OC1hZTgyLTBkODdjZDg3NzUwMSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQGdtYWlsLmNvbSIsImp0aSI6IjNhMjMxYWVlLThlMDctNGE2Zi04YWRhLTJjYTEzNjFkMDI1MSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNjg2MTU0NTMxLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3Mjg4IiwiYXVkIjoiVXNlciJ9.Z9BmX209cl5AlShlPIfakaDgadvPmTFHw62rfShkVI8"
+        // await AsyncStorage.getItem('token')
       }
       
      , //dữ liệu được gửi đi (trong trường hợp POST và PUT)
@@ -39,11 +41,11 @@ class  ViewFarmComponent extends Component {
      
     });
   }
-   
+
 
   handlePressFarm = (id) => {
     console.log(id);
-    this.props.navigation.navigate('ViewSmallholdingComponent', {shId: id});
+    this.props.navigation.navigate('ViewSmallholdingComponent', {farmId: id});
    
   }
   handleGoBack = () => {
