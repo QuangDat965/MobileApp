@@ -10,23 +10,28 @@ class  ViewSmallholdingComponent extends Component {
     super(props);
     this.state = {
      smallholding: [],
+     modelAdd: false,
+     zoneDev :'',
+     zoneDec: '',
+     zoneName: '',
     };
   }
    async componentDidMount() {
-    fetch(url+"SmallHolding/getshbyfarmid", {
+    fetch(url+"Zone/getbyfarmid", {
       method: 'POST', //phương thức request
       headers: { //header của request
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + await AsyncStorage.getItem('token'),
       },
       body: JSON.stringify({
-        "farmId": this.props.route.params.shId,
+        "farmId": this.props.route.params.farmId,
+        // this.props.route.params.farmId,
       }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
     })
     .then(response => response.json())
     .then( async json => {
       console.log(json);
-      this.setState({smallholding: json.data})
+      this.setState({smallholding: json})
     })
     .catch(error => {
       
@@ -34,15 +39,88 @@ class  ViewSmallholdingComponent extends Component {
      
     });
    }
-
+   handleBack = () => {
+    this.props.navigation.navigate('ViewFarmComponent')
+    }
    handleSmallholding = (shId) =>{
     this.props.navigation.navigate('DataDetailsComponent',{shId});
+   }
+   handleSaveAdd = async () => {
+    fetch(url+"Zone/create", {
+      method: 'POST', //phương thức request
+      headers: { //header của request
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + await AsyncStorage.getItem('token'),
+      },
+      body: JSON.stringify({
+        "zoneName": this.state.zoneName,
+        "decription": this.state.zoneDec,
+        "farmId": this.props.route.params.farmId,
+        // this.props.route.params.farmId,
+      }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
+    })
+    .then(response => response.json())
+    .then( async json => {
+      console.log(json);
+      if(json ==true){
+        this.setState({modelAdd: false});
+        this.componentDidMount();
+      }
+    })
+    .catch(error => {
+      
+      console.error('Error:', error);
+     
+    });
    }
    render() {
     
 
     return (
       <View style={styles.container}>
+        <View style = {this.state.modelAdd?styles.addModel:{display: 'none'}} >
+          <View  style = {styles.addForm}>
+                <View style={styles.addHeader}>
+                  <TouchableOpacity onPress={()=>this.setState({modelAdd: false})} style = {styles.closeIcon}>
+                      <Icon  name="close" size={50} color="red" />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.addBody}>
+                <Text></Text>
+                 <TextInput
+                    style={styles.addInput}
+                    placeholder="Name Zone"
+                    onChangeText={(text) => this.setState({ zoneName: text })}
+                    value={this.state.zoneName}
+                    />
+                
+                <TextInput
+                    style={styles.addInput}
+                    placeholder="Decription"
+                    onChangeText={(text) => this.setState({ zoneDec: text })}
+                    value={this.state.zoneDec}
+                    />
+                
+                 <TextInput
+                    style={styles.addInput}
+                    placeholder="DevcieId"
+                    value={this.state.zoneDev}
+                    onChangeText={(text) => this.setState({ zoneDev: text })}
+                    />
+                
+                    
+                    
+                   
+                </View>
+                <View style={styles.addFooter}>
+                  <View style={styles.addButton}>
+                  <TouchableOpacity onPress={()=> this.setState({modelAdd: false})} style={styles.addCancle}><Text style={{lineHeight:40}}>Cancle</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={()=>this.handleSaveAdd()} style={styles.addSave}><Text style={{lineHeight:40, color: '#fff'}}>Save</Text></TouchableOpacity>
+                  </View>
+                </View>
+          </View>
+          
+        </View>
 
        <View style={styles.header}>
        <Text style={styles.title}>My SmallHolding</Text>
@@ -53,6 +131,7 @@ class  ViewSmallholdingComponent extends Component {
        <View style={styles.body}>
 
         <View style={styles.optionNav}>
+          
         <TextInput
         style = {styles.input}
         placeholder='Search'
@@ -87,7 +166,11 @@ class  ViewSmallholdingComponent extends Component {
         <View style={styles.footer}>
           <View style= {styles.footerCirle}></View>
           <View style= {styles.footerRec}></View>
-          <TouchableOpacity style = {styles.iconPlus} >
+          <TouchableOpacity onPress={() => this.handleBack()}   style = {styles.filterIcon}>
+                    
+                <Icon  name="arrow-left" size={30} color="#000" />
+                </TouchableOpacity>
+          <TouchableOpacity onPress={()=> this.setState({modelAdd: true})} style = {styles.iconPlus} >
           <Icon name="plus-circle" size={50} color="#fff" />
 
           </TouchableOpacity>
@@ -99,6 +182,116 @@ class  ViewSmallholdingComponent extends Component {
 }
 
 const styles = StyleSheet.create({
+  addButton: {
+    width: 150,
+    height: 50,
+    position: 'absolute',
+    right: 10,
+    textAlign: 'center',
+    justifyContent: 'center'
+    
+  },
+  addFooter: {
+    backgroundColor: '#fff',
+    height: 50,
+    
+  },
+  addCancle: {
+    position: 'absolute',
+    left: 0,
+    width: 50,
+    height:40,
+    backgroundColor: '#ccc',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    borderRadius: 8,
+  },
+  addSave: {
+    position: 'absolute',
+    right: 0,
+    width: 50,
+    height:40,
+    backgroundColor: 'blue',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    borderRadius: 8,
+    elevation: 5,
+  },
+  addInput: {
+   
+    width: '80%',
+    height: 40,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginBottom: 16,
+    paddingHorizontal: 20,
+    backgroundColor: '#fff',
+   
+  },
+  inputBox: {
+    width: 100,
+    height: 50,
+  },
+  addBody: {
+    width: '100%',
+    height: 250,
+    backgroundColor: '#cca',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  addHeader: {
+    width:'100%',
+    height: 50,
+    backgroundColor: "#ccc",
+
+  },
+  closeIcon: {
+    width: 50,
+    height: 50,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 2,
+  },
+
+  addForm: {
+    backgroundColor: '#fff',
+    width: 300,
+    height: 350,
+    zIndex: 3,
+    opacity: 1,
+    borderRadius: 10,
+    overflow: 'hidden',
+
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5
+  },
+  addModel: {
+    backgroundColor: "rgba(0,0,0,0.4)",
+    width: "100%",
+    height: "100%",
+    position: 'absolute',
+    zIndex:2,
+    alignItems: 'center',
+    justifyContent: 'center',
+   flex: 1,
+    // display: 'none'
+  },
   iconPlus: {
     position: 'absolute',
     zIndex: 1,
@@ -124,7 +317,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 30,
-    padding: 5
+    position: 'relative'
   },
   header: {
     backgroundColor: 'rgb(137,219,130)', 
