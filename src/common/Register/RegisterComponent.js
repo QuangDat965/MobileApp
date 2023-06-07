@@ -37,10 +37,12 @@ export default class RegisterComponent extends Component{
           console.log('Response:', json);
           if(json.code==0){
             await AsyncStorage.setItem('token', String(json.token))
+            Alert.alert('Dang ki thanh cong');
             this.props.navigation.navigate('HomeComponent')
           }
           else if(json.code ==-1){
               Alert.alert('Dang ki khong thanh cong');
+
           }
         }).catch(error => {
         console.error('Error:', error);

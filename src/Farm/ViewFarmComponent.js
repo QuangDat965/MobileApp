@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Button, Image,
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import url from '../Constant/Request';
+import CreateFarmComponent from './CreateFarmComponent';
+
 
 class  ViewFarmComponent extends Component {
   constructor(props) {
@@ -21,12 +23,15 @@ class  ViewFarmComponent extends Component {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + await AsyncStorage.getItem('token'),
       }
+      
      , //dữ liệu được gửi đi (trong trường hợp POST và PUT)
     })
     .then(response => response.json())
     .then( async json => {
       console.log(json);
-      this.setState({farms: json})
+      if(json.code == 1){
+        this.setState({farms: json.data})
+      }
     })
     .catch(error => {
       
@@ -41,11 +46,19 @@ class  ViewFarmComponent extends Component {
     this.props.navigation.navigate('ViewSmallholdingComponent', {shId: id});
    
   }
+  handleGoBack = () => {
+    this.props.navigation.navigate('HomeComponent')
+  }
+  DirectionCreateFarm = () =>{
+    this.props.navigation.navigate('CreateFarmComponent')
+  }
    render() {
-  
     return (
       <View style={styles.container}>
-
+            <TouchableOpacity onPress={() => this.handleGoBack()}>
+              <Image source={require('../../assets/backpage.png')}
+                style={{ width: 40, height: 40, top: 10}}/>
+                </TouchableOpacity> 
        <View style={styles.header}>
        <Text style={styles.title}>My Farm</Text>
        <Image source = {require('../../assets/th.jpg')}
@@ -89,14 +102,16 @@ class  ViewFarmComponent extends Component {
         </View>
 
         <View style={styles.footer}>
-          <View style= {styles.footerCirle}></View>
+          <View style= {styles.footerCirle} ></View>
           <View style= {styles.footerRec}></View>
-          <TouchableOpacity style = {styles.iconPlus} >
+          <TouchableOpacity style = {styles.iconPlus} onPress = {() => this.DirectionCreateFarm()}>
           <Icon name="plus-circle" size={50} color="#fff" />
-
+          
           </TouchableOpacity>
         </View>
+        
 
+      <CreateFarmComponent></CreateFarmComponent>
       </View>
     );
   }
@@ -127,6 +142,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    width: "100%",
+    height: "100%",
     marginTop: 30,
     padding: 5
   },
