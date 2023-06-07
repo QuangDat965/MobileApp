@@ -72,7 +72,11 @@ export default class HomeComponent extends Component {
 
     }
   }
- 
+  handleChosen = (Id) => {
+    if(Id ==1){
+      this.props.navigation.navigate('ViewFarmComponent');
+    }
+  }
   render() {
    
     return (
@@ -90,7 +94,7 @@ export default class HomeComponent extends Component {
         <View style={styles.itemList} >
           {this.state.menu.map((e,i)=> {
            return ( <View key={i} style={styles.item}>
-            <TouchableOpacity style= {styles.intemImg}>
+            <TouchableOpacity style= {styles.intemImg} onPress={()=>this.handleChosen(e.Id)}>
             <Image source={e.Icon} style={{width: "100%", height: "100%",aspectRatio: 1}} />
             </TouchableOpacity>                
                 <Text>{e.Title}</Text>
