@@ -15,20 +15,18 @@ class  ViewFarmComponent extends Component {
 
 
   async componentDidMount () {
-    fetch(url+"Farm/getafarmbyownerid", {
-      method: 'POST', //phương thức request
+    fetch(url+"Farm/getbytoken", {
+      method: 'GET', //phương thức request
       headers: { //header của request
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + await AsyncStorage.getItem('token'),
-      },
-      body: JSON.stringify({
-        "ownerID": await AsyncStorage.getItem('id'),
-      }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
+      }
+     , //dữ liệu được gửi đi (trong trường hợp POST và PUT)
     })
     .then(response => response.json())
     .then( async json => {
       console.log(json);
-      this.setState({farms: json.data})
+      this.setState({farms: json})
     })
     .catch(error => {
       
@@ -73,9 +71,9 @@ class  ViewFarmComponent extends Component {
         </View>
 
           <ScrollView >
-              <View style={styles.scrolls}>
-                {this.state.farms.map((e,i)=>{
-                return (<TouchableOpacity onPress={()=> this.handlePressFarm(e.id)} style= {styles.itemFarm} key={i}>
+              <View style={styles.scrolls}>           
+                {this.state.farms.map(e=>{
+                return (<TouchableOpacity onPress={()=> this.handlePressFarm(e.id)} style= {styles.itemFarm} key={e.id}>
                   <Image source={require('../../assets/farmImage.jpg')}
                   style={styles.farmImage}/>
                   <View style = {styles.farmText}>
