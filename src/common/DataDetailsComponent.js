@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTime from './DateTime';
 import DataRealTime from './DataRealTimeComponent';
 import ActionComponent from './ActionComponent';
+import DataSensor from '../User/DataSensor/DataSensor';
+import DataControl from '../User/DataControl/DataControl';
 
 class  DataDetailsComponent extends Component {
   constructor(props) {
@@ -34,7 +36,7 @@ class  DataDetailsComponent extends Component {
       <View style={styles.container}>
 
        <View style={styles.header}>
-            <Text style={styles.title}>My Farm</Text>
+            <Text style={styles.title}>Sensor</Text>
             <Image source = {require('../../assets/th.jpg')}
                     style = {styles.logo}
             />
@@ -57,7 +59,7 @@ class  DataDetailsComponent extends Component {
 
                 <ScrollView>
                 <View style = {styles.scrolls}>
-                {this.state.view === true ? <DataRealTime/>: <ActionComponent/>}
+                {this.state.view === true ? <DataSensor/>: <DataControl/>}
                     <View style= {styles.charDataValue}>
                         
                     </View>

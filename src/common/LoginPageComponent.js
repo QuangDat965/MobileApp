@@ -53,6 +53,7 @@ export default class LoginPageComponent extends Component {
     })
     .catch(error => {
       console.error('Error:', error);
+      Alert.alert('Loi ngoai le');
     })
     .finally(p=>{
       this.setState({isLoading:false})
