@@ -42,6 +42,7 @@ export default class RegisterComponent extends Component{
           }
           else if(json.code ==-1){
               Alert.alert('Dang ki khong thanh cong');
+
           }
         }).catch(error => {
         console.error('Error:', error);
