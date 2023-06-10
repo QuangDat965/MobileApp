@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Button, Image,
-  ScrollView,TextInput } from 'react-native';
+  ScrollView,TextInput, Picker } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import url from '../Constant/Request';
+import {styles} from './ViewSmallHoldingStyle.js'
 
 class  ViewSmallholdingComponent extends Component {
   constructor(props) {
@@ -14,10 +15,17 @@ class  ViewSmallholdingComponent extends Component {
      zoneDev :'',
      zoneDec: '',
      zoneName: '',
+     modelDevice: false,
+     selectedValue: '',
+     devices : [],
+     deviceId : '',
+     zoneId: '',
+     zonehasValue: []
     };
   }
    async componentDidMount() {
-    fetch(url+"Zone/getbyfarmid", {
+    this.fetchDeviceActive();
+    fetch(url+"Zone/getby-farmid", {
       method: 'POST', //phương thức request
       headers: { //header của request
         'Content-Type': 'application/json',
@@ -31,7 +39,9 @@ class  ViewSmallholdingComponent extends Component {
     .then(response => response.json())
     .then( async json => {
       console.log(json);
-      this.setState({smallholding: json})
+      if(json.code == 1){
+        this.setState({smallholding: json.data})
+      }
     })
     .catch(error => {
       
@@ -42,8 +52,75 @@ class  ViewSmallholdingComponent extends Component {
    handleBack = () => {
     this.props.navigation.navigate('ViewFarmComponent')
     }
-   handleSmallholding = (shId) =>{
-    this.props.navigation.navigate('DataDetailsComponent',{shId});
+   handleSmallholding = (zoneId) =>{
+    if(this.state.zonehasValue.includes(zoneId)){
+      this.props.navigation.navigate('DataDetailsComponent',{zoneId: zoneId});
+    }
+   }
+   handleInsertDevice = async () => {
+    fetch(url+"Device/setzone", {
+      method: 'POST', //phương thức request
+      headers: { //header của request
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + await AsyncStorage.getItem('token'),
+      },
+      body: JSON.stringify({
+        "deviceId": this.state.selectedValue,
+        "zoneId": this.state.zoneId
+        // this.props.route.params.farmId,
+      }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
+    })
+    .then(response => response.json())
+    .then( async json => {
+      console.log(json);
+      if(json.code ==1){
+        this.setState({modelDevice: false });
+        this.fetchDeviceActive();
+      }
+    })
+    .catch(error => {
+      
+      console.error('Error:', error);
+     
+    });
+   }
+   handleAddDevice= (id) => {
+    
+    this.setState({modelDevice: true,zoneId: id
+    })
+   }
+   async fetchDeviceActive() {
+    fetch(url+"Device/getdeviceative", {
+      method: 'POST', //phương thức request
+      headers: { //header của request
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + await AsyncStorage.getItem('token'),
+      },
+      body: JSON.stringify({
+        "deviceId": "string",
+        "zoneId": 0
+        // this.props.route.params.farmId,
+      }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
+    })
+    .then(response => response.json())
+    .then( async json => {
+      console.log(json);
+      if(json.code ==1){
+        var arr = [];
+        this.setState({devices: json.data});
+        json.data.map(e=> {
+          if(e.zoneId!=null){
+            arr.push(e.zoneId);
+            this.setState({zonehasValue: arr})
+          }
+        })
+      }
+    })
+    .catch(error => {
+      
+      console.error('Error:', error);
+     
+    });
    }
    handleSaveAdd = async () => {
     fetch(url+"Zone/create", {
@@ -78,6 +155,35 @@ class  ViewSmallholdingComponent extends Component {
 
     return (
       <View style={styles.container}>
+        <View style={this.state.modelDevice?styles.flexAddDevice: {display: 'none'}}>
+          <View style={styles.modelDevice}>
+            <View style={styles.mDHeader}>
+              <TouchableOpacity onPress = {()=>this.setState({modelDevice: false})} style={styles.boxCloseDevice} >
+                <Icon name='close' size={50} color="red"/>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.mDBody}>
+                <Picker
+              selectedValue={this.state.selectedValue}
+              onValueChange={(itemValue, itemIndex) =>
+                this.setState({ selectedValue: itemValue })
+              }>
+              {this.state.devices.map((e)=> {
+                return (
+                  <Picker.Item key ={e.id} label={e.name} value={e.id} />
+                )
+              })}
+              
+            </Picker>
+            </View>
+            <View style={styles.mDFooter}>
+              <TouchableOpacity onPress={()=> this.handleInsertDevice()} style={styles.mDFooter_Save}>
+                <Text style = {{color: '#fff'}}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
         <View style = {this.state.modelAdd?styles.addModel:{display: 'none'}} >
           <View  style = {styles.addForm}>
                 <View style={styles.addHeader}>
@@ -157,6 +263,13 @@ class  ViewSmallholdingComponent extends Component {
                       <Text>{e.name}</Text>
                       <Text>{e.decription}</Text>
                       </View>
+                      <View style={
+                        this.state.zonehasValue.includes(e.id)?styles.statusDeviceGreen: styles.statusDeviceRed
+                      }>
+                      </View>
+                      <TouchableOpacity onPress={()=> this.handleAddDevice(e.id)} style={styles.itemAddDevice}>
+                        <Icon name="plus" size={30} color="#ccc"/>
+                      </TouchableOpacity>
                   </TouchableOpacity>)
                   })} 
               </View>       
@@ -181,234 +294,6 @@ class  ViewSmallholdingComponent extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  addButton: {
-    width: 150,
-    height: 50,
-    position: 'absolute',
-    right: 10,
-    textAlign: 'center',
-    justifyContent: 'center'
-    
-  },
-  addFooter: {
-    backgroundColor: '#fff',
-    height: 50,
-    
-  },
-  addCancle: {
-    position: 'absolute',
-    left: 0,
-    width: 50,
-    height:40,
-    backgroundColor: '#ccc',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-    borderRadius: 8,
-  },
-  addSave: {
-    position: 'absolute',
-    right: 0,
-    width: 50,
-    height:40,
-    backgroundColor: 'blue',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    borderRadius: 8,
-    elevation: 5,
-  },
-  addInput: {
-   
-    width: '80%',
-    height: 40,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 16,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-   
-  },
-  inputBox: {
-    width: 100,
-    height: 50,
-  },
-  addBody: {
-    width: '100%',
-    height: 250,
-    backgroundColor: '#cca',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  addHeader: {
-    width:'100%',
-    height: 50,
-    backgroundColor: "#ccc",
 
-  },
-  closeIcon: {
-    width: 50,
-    height: 50,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#fff',
-    borderRadius: 10,
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    right: 2,
-  },
-
-  addForm: {
-    backgroundColor: '#fff',
-    width: 300,
-    height: 350,
-    zIndex: 3,
-    opacity: 1,
-    borderRadius: 10,
-    overflow: 'hidden',
-
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5
-  },
-  addModel: {
-    backgroundColor: "rgba(0,0,0,0.4)",
-    width: "100%",
-    height: "100%",
-    position: 'absolute',
-    zIndex:2,
-    alignItems: 'center',
-    justifyContent: 'center',
-   flex: 1,
-    // display: 'none'
-  },
-  iconPlus: {
-    position: 'absolute',
-    zIndex: 1,
-    top: -5
-  },
-  footer: {
-    width: '100%',
-    height: '10%',
-    position: 'relative',
-    alignItems: 'center',
-    backgroundColor: '#565656'
-  },
-
-  footerCirle: {
-    height: 70,
-    width: 70,
-    backgroundColor: '#565656',
-    position: 'absolute',
-    borderRadius: 50,
-    top: -25,
-    
-  },
-  container: {
-    flex: 1,
-    marginTop: 30,
-    position: 'relative'
-  },
-  header: {
-    backgroundColor: 'rgb(137,219,130)', 
-    width: '100%',
-    height: '15%',
-    justifyContent: 'center',
-    marginBottom: 4
-    
-  },
-  title: {
-    fontSize: 20,
-    textAlign: 'left',
-    marginLeft: 10,
-    color: '#fff'
-  },
-  logo: {
-    width: 80,
-    height: 80,
-    position : 'absolute',
-    right: 20,
-    borderRadius: 15,
-  },
-  body: {
-    backgroundColor: '',
-    height: '75%',
-    marginTop: 0
-  },
-  optionNav: {
-    backgroundColor: '',
-    height: 50,
-    justifyContent: 'center',
-    borderRadius: 5
-  },
-  input: {
-    backgroundColor: '#ccc',
-    width: '60%',
-    borderRadius: 15,
-    marginLeft: 10,
-    height: '80%',
-    position: 'absolute',
-    textAlign: 'left',
-    paddingLeft: 50
-  },
-  searchIcon: {
-    marginLeft: 20,
-    position: 'absolute'
-  },
-  filterIcon: {
-    position: 'absolute',
-    right: 60,
-    backgroundColor: '#ccc',
-    width: 40,
-    height: '80%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 7
-
-  },
-  settingIcon: {
-    position: 'absolute',
-    right: 10,
-    backgroundColor: '#ccc',
-    width: 40,
-    height: '80%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 7
-  },
-  itemFarm: {
-    width: '90%',
-    height: 100,
-    backgroundColor: '#ccc',
-    marginBottom: 10,
-    borderRadius: 10,
-    justifyContent:'center'
-  },
-  scrolls: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  farmText: {
-    position:'absolute',
-    left: 75 
-  },
-  farmImage: {
-    width: 65,
-    height: 65,
-    borderRadius: 10,
-    left: 3
-  }
-
-});
 
 export default ViewSmallholdingComponent;

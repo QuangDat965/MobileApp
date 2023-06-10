@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import RegisterComponent from "./src/common/Register/RegisterComponent";
 import LoginPageComponent from "./src/common/LoginPageComponent";
 import DataDetailsComponent from "./src/common/DataDetailsComponent";
-import ViewSmallholdingComponent from "./src/common/ViewSmallHoldingComponent";
+import ViewSmallholdingComponent from "./src/Zone/ViewSmallHoldingComponent";
 import ViewFarmComponent from "./src/Farm/ViewFarmComponent";
 import CreateFarmComponent from "./src/Farm/CreateFarmComponent";
 import HomeComponent from "./src/User/HomeComponent/HomeComponent";
