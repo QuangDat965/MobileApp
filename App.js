@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import RegisterComponent from './src/common/Register/RegisterComponent';
 import LoginPageComponent from './src/common/LoginPageComponent';
 import DataDetailsComponent from './src/common/DataDetailsComponent';
-import ViewSmallholdingComponent from './src/common/ViewSmallHoldingComponent';
+import ViewSmallholdingComponent from './src/Zone/ViewSmallHoldingComponent';
 import ViewFarmComponent from './src/Farm/ViewFarmComponent';
 import CreateFarmComponent from './src/Farm/CreateFarmComponent';
 import HomeComponent from './src/User/HomeComponent/HomeComponent';
@@ -14,7 +14,7 @@ export default function App() {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName="ViewFarmComponent">
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Register" component={RegisterComponent} options={{ headerShown: false }}  />
           <Stack.Screen name="HomeComponent" component={HomeComponent} options={{ headerShown: false }}  />
           <Stack.Screen name="Login" component={LoginPageComponent} options={{ headerShown: false }}  />
