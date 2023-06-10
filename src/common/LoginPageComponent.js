@@ -1,15 +1,26 @@
-import React, { Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet,Animated , TouchableOpacity, Alert,ActivityIndicator } from 'react-native';
-import url from '../Constant/Request';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Loading from './Loading';
+import React, { Component } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+  ToastAndroid,
+} from "react-native";
+import url from "../Constant/Request";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loading from "./Loading";
 
 export default class LoginPageComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       isLoading: false,
     };
   }
@@ -20,62 +31,72 @@ export default class LoginPageComponent extends Component {
     //   useNativeDriver: true, // để sử dụng native driver cho performance tốt hơn
     // }).start();
   }
-  callApi(){
-    this.setState({isLoading: true});
-    fetch(url+"auth/signin", {
-      method: 'POST', //phương thức request
-      headers: { //header của request
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + "",
+  callApi() {
+    this.setState({ isLoading: true });
+    fetch(url + "auth/signin", {
+      method: "POST", //phương thức request
+      headers: {
+        //header của request
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + "",
       },
       body: JSON.stringify({
-          "email": this.state.email,
-          "password": this.state.password
+        email: this.state.email,
+        password: this.state.password,
       }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
     })
-    .then(response => response.json())
-    .then(async json => {
-      console.log('Response:', json);
-      if(json.code==0){
-          await AsyncStorage.setItem('token', String(json.token))
-          this.props.navigation.navigate('HomeComponent')
-      }
-      else if(json.code ==-1){
-      this.setState({isLoading:false})
-      Alert.alert('Sai mat khau');
-      }
-      else {
-      this.setState({isLoading:false})
-      Alert.alert('Sai mat khau');
-
-        
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      Alert.alert('Loi ngoai le');
-    })
-    .finally(p=>{
-      this.setState({isLoading:false})
-    });
+      .then((response) => response.json())
+      .then(async (json) => {
+        console.log("Response:", json);
+        if (json.code == 0) {
+          await AsyncStorage.setItem("token", String(json.token));
+          this.props.navigation.navigate("HomeComponent");
+        } else if (json.code == -1) {
+          this.setState({ isLoading: false });
+          Alert.alert("Sai mat khau");
+        } else {
+          this.setState({ isLoading: false });
+          Alert.alert("Sai mat khau");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        Alert.alert("Loi ngoai le");
+      })
+      .finally((p) => {
+        this.setState({ isLoading: false });
+      });
   }
-  handleSubmit =  () => {
-    if(this.state.email.length > 3 && this.state.password.length > 3){
+  handleSubmit = () => {
+    if (this.state.email == "") {
+      Alert.alert("Warning", "Vui lòng điền email", [{ text: "OK" }], {
+        cancelable: true,
+      });
+    } else if (this.state.password < 3) {
+      Alert.alert(
+        "Warning",
+        "Vui lòng điền password nhiều hơn 3 kí tự",
+        [{ text: "OK" }],
+        {
+          cancelable: true,
+        }
+      );
+    } else if (this.state.password == "") {
+      Alert.alert("Warning", "Vui lòng điền password", [{ text: "OK" }], {
+        cancelable: true,
+      });
+    } else {
       this.callApi();
     }
-    else{
-      Alert.alert("vui long nhap tk mk")
-    }
-   
-  }
+  };
   handlePressToRegister = () => {
-    this.props.navigation.navigate('Register')
-  }
- 
+    this.props.navigation.navigate("Register");
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Loading isLoading={this.state.isLoading}/>
+        <Loading isLoading={this.state.isLoading} />
         <Text style={styles.heading}>Login</Text>
         <TextInput
           style={styles.input}
@@ -90,14 +111,23 @@ export default class LoginPageComponent extends Component {
           onChangeText={(text) => this.setState({ password: text })}
           value={this.state.password}
         />
-        <TouchableOpacity onPress={() => this.handleSubmit()}  style={styles.button}>  
-        <Text>Login</Text>     
+        <TouchableOpacity
+          onPress={() => this.handleSubmit()}
+          style={styles.button}
+        >
+          <Text>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.handlePressToRegister} style = {styles.FogotAccount}>
-        <Text style={{ color: 'blue' }}>Bạn chưa có tài khoản?</Text>
+        <TouchableOpacity
+          onPress={this.handlePressToRegister}
+          style={styles.FogotAccount}
+        >
+          <Text style={{ color: "blue" }}>Bạn chưa có tài khoản?</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.handlePressToFogotAccount} style = {styles.FogotAccount}>
-        <Text style={{ color: 'blue' }}>Quên mật khẩu?</Text>
+        <TouchableOpacity
+          onPress={this.handlePressToFogotAccount}
+          style={styles.FogotAccount}
+        >
+          <Text style={{ color: "blue" }}>Quên mật khẩu?</Text>
         </TouchableOpacity>
       </View>
     );
@@ -107,40 +137,40 @@ export default class LoginPageComponent extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F2F2F2',
-    width : '100%'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F2F2F2",
+    width: "100%",
   },
   heading: {
     fontSize: 24,
     marginBottom: 24,
-    color: '#F76C6C',
-    fontWeight: 'bold',
+    color: "#F76C6C",
+    fontWeight: "bold",
     letterSpacing: 2,
   },
   input: {
-    width: '80%',
+    width: "80%",
     height: 40,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     marginBottom: 16,
     paddingHorizontal: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   label: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginHorizontal: 5,
   },
   FogotAccount: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });
