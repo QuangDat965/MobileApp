@@ -113,7 +113,6 @@ class  ViewFarmComponent extends Component {
         </View>
         
 
-      <CreateFarmComponent></CreateFarmComponent>
       </View>
     );
   }
