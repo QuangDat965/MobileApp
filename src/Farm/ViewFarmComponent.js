@@ -18,22 +18,24 @@ class ViewFarmComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modelAdd: false,
-      modelEdit: false,
+      search: "",
+      filter: 0,
+      visible: false,
       farms: [],
     };
   }
-
-  async componentDidMount() {
+  callApi = async () => {
     fetch(url + "Farm/getbytoken", {
-      method: "GET", //phương thức request
+      method: "POST", //phương thức request
       headers: {
         //header của request
         "Content-Type": "application/json",
         Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-        // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6ImI0MTEyOTA0LTZlMDctNDM5OC1hZTgyLTBkODdjZDg3NzUwMSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQGdtYWlsLmNvbSIsImp0aSI6IjNhMjMxYWVlLThlMDctNGE2Zi04YWRhLTJjYTEzNjFkMDI1MSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNjg2MTU0NTMxLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3Mjg4IiwiYXVkIjoiVXNlciJ9.Z9BmX209cl5AlShlPIfakaDgadvPmTFHw62rfShkVI8"
-        // await AsyncStorage.getItem('token')
       }, //dữ liệu được gửi đi (trong trường hợp POST và PUT)
+      body: JSON.stringify({
+        searchTerm: this.state.search,
+        filterType: this.state.filter,
+      }),
     })
       .then((response) => response.json())
       .then(async (json) => {
@@ -45,6 +47,10 @@ class ViewFarmComponent extends Component {
       .catch((error) => {
         console.error("Error:", error);
       });
+  };
+
+  componentDidMount() {
+    this.callApi();
   }
 
   handlePressFarm = (id) => {
@@ -57,6 +63,9 @@ class ViewFarmComponent extends Component {
   DirectionCreateFarm = () => {
     this.props.navigation.navigate("CreateFarmComponent");
   };
+  handleShow = () => {
+    this.setState({ visible: true });
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -64,7 +73,7 @@ class ViewFarmComponent extends Component {
           <TouchableOpacity onPress={() => this.handleGoBack()}>
             <Image
               source={require("../../assets/backpage.png")}
-              style={{ width: 40, height: 40, top: 10 }}
+              style={{ width: 40, height: 40, top: 5 }}
             />
           </TouchableOpacity>
           <View style={styles.header}>
@@ -76,16 +85,29 @@ class ViewFarmComponent extends Component {
           </View>
           <View style={styles.body}>
             <View style={styles.optionNav}>
-              <TextInput style={styles.input} placeholder="Search" />
-              <Icon
-                style={styles.searchIcon}
-                name="search"
-                size={30}
-                color="#000"
-              />
-              <TouchableOpacity style={styles.filterIcon}>
+              <TouchableOpacity style={styles.searchBar}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Search"
+                  onChangeText={(text) => this.setState({ search: text })}
+                  onChange={this.callApi}
+                />
+                <Icon
+                  style={styles.searchIcon}
+                  name="search"
+                  size={30}
+                  color="#000"
+                  onPress={this.callApi}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.filterIcon} onPress={handleShow}>
                 <Icon name="filter" size={30} color="#000" />
               </TouchableOpacity>
+              <Modal visible={this.state.visible} onShow={handleShow}>
+                <View>
+                  <Text>This is a modal</Text>
+                </View>
+              </Modal>
               <TouchableOpacity style={styles.settingIcon}>
                 <Icon name="gear" size={30} color="#000" />
               </TouchableOpacity>
@@ -125,6 +147,9 @@ class ViewFarmComponent extends Component {
               <Icon name="plus-circle" size={50} color="#fff" />
             </TouchableOpacity>
           </View>
+          <Button style={styles.refresh} onPress={this.callApi}>
+            Refresh
+          </Button>
         </View>
       </View>
     );
@@ -169,7 +194,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     textAlign: "left",
     marginLeft: 10,
     color: "#fff",
@@ -188,9 +213,14 @@ const styles = StyleSheet.create({
   },
   optionNav: {
     backgroundColor: "",
+    flexDirection: "row",
     height: 50,
-    justifyContent: "center",
+    justifyContent: "left",
     borderRadius: 5,
+  },
+  searchBar: {
+    flexDirection: "row",
+    width: "110%",
   },
   input: {
     backgroundColor: "#ccc",
@@ -247,6 +277,11 @@ const styles = StyleSheet.create({
     height: 65,
     borderRadius: 10,
     left: 3,
+  },
+  refresh: {
+    position: "absolute",
+    right: 10,
+    marginRight: 50,
   },
 });
 
