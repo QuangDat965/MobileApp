@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Button, Image,
-  ScrollView,TextInput, Picker } from 'react-native';
+  ScrollView,TextInput } from 'react-native';
+  import {Picker} from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import url from '../Constant/Request';
