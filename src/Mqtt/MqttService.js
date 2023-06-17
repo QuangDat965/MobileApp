@@ -3,6 +3,7 @@ import init from 'react_native_mqtt';
 import UUIDGenerator from 'react-native-uuid';
 
 
+
 init({
   size: 10000,
   storageBackend: AsyncStorage,
@@ -49,9 +50,9 @@ class MqttService  {
   subscribeTopic = (topic) => {
     this.client.subscribe(topic, { qos: 0 });
   }
-  sendMessage = () =>{
-    var message = new Paho.MQTT.Message(options.id + ':' + 'hello i am hubert');
-    message.destinationName = '25052001';
+  sendMessage = (topic, payload) =>{
+    var message = new Paho.MQTT.Message(payload);
+    message.destinationName = topic;
     this.client.send(message);
   }
   getCLient(){

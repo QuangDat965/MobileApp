@@ -12,7 +12,6 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import url from "../Constant/Request";
-import CreateFarmComponent from "./CreateFarmComponent";
 
 class ViewFarmComponent extends Component {
   constructor(props) {
@@ -22,6 +21,10 @@ class ViewFarmComponent extends Component {
       filter: 0,
       visible: false,
       farms: [],
+      modelAdd: false,
+      farmName: '',
+      farmDesc: '',
+      farmAdress: ''
     };
   }
   callApi = async () => {
@@ -66,16 +69,79 @@ class ViewFarmComponent extends Component {
   handleShow = () => {
     this.setState({ visible: true });
   };
+  handleSaveAddFarm =async () => {
+    this.setState({modelAdd:false})
+    fetch(url + "Farm/add", {
+      method: "POST", //phương thức request
+      headers: {
+        //header của request
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
+      },
+      body: JSON.stringify({
+        farmName: this.state.farmName,
+        farmDescription: this.state.farmDesc,
+        avata: "abc",
+        adress: this.state.farmAdress,
+      }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
+    })
+      .then((response) => response.json())
+      .then(async (json) => {
+        console.log("Response:", json);
+        //
+        if (json.code == 1) {
+          console.log("Response:", json);
+          this.callApi();
+        } else if (json.code == 0) {
+          Alert.alert("Đã xảy ra lôĩ");
+        }
+      });
+  }
   render() {
     return (
       <View style={styles.container}>
-        <View>
-          <TouchableOpacity onPress={() => this.handleGoBack()}>
-            <Image
-              source={require("../../assets/backpage.png")}
-              style={{ width: 40, height: 40, top: 5 }}
-            />
-          </TouchableOpacity>
+         <View style = {this.state.modelAdd?styles.addModel:{display: 'none'}} >
+          <View  style = {styles.addForm}>
+                <View style={styles.addHeader}>
+                  <TouchableOpacity onPress={()=>this.setState({modelAdd: false})} style = {styles.closeIcon}>
+                      <Icon  name="close" size={50} color="red" />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.addBody}>
+                  <Text></Text>
+                  <TextInput
+                      style={styles.addInput}
+                      placeholder="Name Farm"
+                      onChangeText={(text) => this.setState({ farmName: text })}
+                      value={this.state.farmName}
+                      />
+                  
+                  <TextInput
+                      style={styles.addInput}
+                      placeholder="Decription"
+                      onChangeText={(text) => this.setState({ farmDesc: text })}
+                      value={this.state.farmDesc}
+                      />
+                  
+                  <TextInput
+                      style={styles.addInput}
+                      placeholder="DevcieId"
+                      value={this.state.farmAdress}
+                      onChangeText={(text) => this.setState({ farmAdress: text })}
+                      />
+                 </View>
+
+                <View style={styles.addFooter}>
+                  <View style={styles.addButton}>
+                  <TouchableOpacity onPress={()=> this.setState({modelAdd: false})} style={styles.addCancle}><Text style={{lineHeight:40}}>Cancle</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={()=>this.handleSaveAddFarm()} style={styles.addSave}><Text style={{lineHeight:40, color: '#fff'}}>Save</Text></TouchableOpacity>
+                  </View>
+                </View>
+          </View>
+          
+         </View>
+
           <View style={styles.header}>
             <Text style={styles.title}>My Farm</Text>
             <Image
@@ -100,17 +166,24 @@ class ViewFarmComponent extends Component {
                   onPress={this.callApi}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.filterIcon} onPress={handleShow}>
+              <TouchableOpacity style = {styles.filterIcon}>
+              <Icon  name="filter" size={30} color="#000" />
+            </TouchableOpacity>
+            <TouchableOpacity style = {styles.settingIcon}>
+            <Icon  name="gear" size={30} color="#000" />
+
+              </TouchableOpacity>
+              {/* <TouchableOpacity style={styles.filterIcon} onPress={this.handleShow}>
                 <Icon name="filter" size={30} color="#000" />
               </TouchableOpacity>
-              <Modal visible={this.state.visible} onShow={handleShow}>
+              <Modal visible={this.state.visible} onShow={this.handleShow}>
                 <View>
                   <Text>This is a modal</Text>
                 </View>
               </Modal>
               <TouchableOpacity style={styles.settingIcon}>
                 <Icon name="gear" size={30} color="#000" />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
             <ScrollView>
@@ -138,37 +211,163 @@ class ViewFarmComponent extends Component {
           </View>
 
           <View style={styles.footer}>
+          <TouchableOpacity onPress={() => this.handleGoBack()}   style = {styles.backIcon}>
+                    
+                    <Icon  name="arrow-left" size={30} color="#000" />
+          </TouchableOpacity>
             <View style={styles.footerCirle}></View>
             <View style={styles.footerRec}></View>
-            <TouchableOpacity
+            <TouchableOpacity onPress={()=>this.setState({modelAdd:true})}
               style={styles.iconPlus}
-              onPress={() => this.DirectionCreateFarm()}
+              
             >
               <Icon name="plus-circle" size={50} color="#fff" />
             </TouchableOpacity>
           </View>
-          <Button style={styles.refresh} onPress={this.callApi}>
-            Refresh
-          </Button>
-        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  addButton: {
+    width: 150,
+    height: 50,
+    position: 'absolute',
+    right: 10,
+    textAlign: 'center',
+    justifyContent: 'center'
+    
+  },
+  addFooter: {
+    backgroundColor: '#fff',
+    height: 50,
+    
+  },
+  addCancle: {
+    position: 'absolute',
+    left: 0,
+    width: 50,
+    height:40,
+    backgroundColor: '#ccc',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    borderRadius: 8,
+  },
+  addSave: {
+    position: 'absolute',
+    right: 0,
+    width: 50,
+    height:40,
+    backgroundColor: 'blue',
+    shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    borderRadius: 8,
+    elevation: 5,
+  },
+  addInput: {
+   
+    width: '80%',
+    height: 40,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginBottom: 16,
+    paddingHorizontal: 20,
+    backgroundColor: '#fff',
+   
+  },
+  inputBox: {
+    width: 100,
+    height: 50,
+  },
+  addBody: {
+    width: '100%',
+    height: 250,
+    backgroundColor: '#cca',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  addHeader: {
+    width:'100%',
+    height: 50,
+    backgroundColor: "#ccc",
+
+  },
+  closeIcon: {
+    width: 50,
+    height: 50,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 2,
+  },
+
+  addForm: {
+    backgroundColor: '#fff',
+    width: 300,
+    height: 350,
+    zIndex: 3,
+    opacity: 1,
+    borderRadius: 10,
+    overflow: 'hidden',
+
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5
+  },
+  addModel: {
+    backgroundColor: "rgba(0,0,0,0.4)",
+    width: "100%",
+    height: "100%",
+    position: 'absolute',
+    zIndex:2,
+    alignItems: 'center',
+    justifyContent: 'center',
+   flex: 1,
+    // display: 'none'
+  },
+  backIcon: {
+    position: 'absolute',
+    right: 60,
+    backgroundColor: '#ccc',
+    width: 40,
+    height: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 7
+  },
+  backHome: {
+    width: 40,
+    height: 40,
+    position: 'absolute',
+    zIndex: 2,
+    left: 0
+  },
   iconPlus: {
     position: "absolute",
     zIndex: 1,
     top: -5,
   },
   footer: {
-    width: "100%",
-    height: "5%",
-    position: "relative",
-    alignItems: "center",
-    backgroundColor: "#565656",
-    marginBottom: 20,
+    width: '100%',
+    height: '10%',
+    position: 'relative',
+    alignItems: 'center',
+    backgroundColor: '#565656'
   },
 
   footerCirle: {
@@ -215,12 +414,12 @@ const styles = StyleSheet.create({
     backgroundColor: "",
     flexDirection: "row",
     height: 50,
-    justifyContent: "left",
+    justifyContent: "center",
     borderRadius: 5,
   },
   searchBar: {
     flexDirection: "row",
-    width: "110%",
+    width: "80%",
   },
   input: {
     backgroundColor: "#ccc",

@@ -119,7 +119,6 @@ export  const styles = StyleSheet.create({
   footer: {
     width: '100%',
     height: '10%',
-    position: 'relative',
     alignItems: 'center',
     backgroundColor: '#565656'
   },
@@ -136,14 +135,14 @@ export  const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 30,
-    position: 'relative'
+ 
   },
   header: {
     backgroundColor: 'rgb(137,219,130)', 
     width: '100%',
     height: '15%',
     justifyContent: 'center',
-    marginBottom: 4
+
     
   },
   title: {
@@ -160,9 +159,10 @@ export  const styles = StyleSheet.create({
     borderRadius: 15,
   },
   body: {
-    backgroundColor: '',
-    height: '75%',
-    marginTop: 0
+  
+    height: "75%",
+    width: "100%",
+    marginTop: 0,
   },
   optionNav: {
     backgroundColor: '',
@@ -299,5 +299,12 @@ export  const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     right: 0
-  }
+  },
+  deviceBox: {
+    borderWidth: 2,
+    borderColor: "#ccc",
+    borderStyle: 'solid',
+    backgroundColor: "#ccf",
+    margin: 5
+  },
 });
