@@ -43,38 +43,39 @@ class  DataDetailsComponent extends Component {
         </View>
        <View style={styles.body}>
 
-            <View style={styles.optionNav}>
+                <View style={styles.optionNav}>
 
-                <TouchableOpacity onPress={() => this.handleBack()}   style = {styles.filterIcon}>
-                    
-                <Icon  name="arrow-left" size={30} color="#000" />
-                </TouchableOpacity>
-                <TouchableOpacity style = {styles.settingIcon}>
-                <Icon  name="gear" size={30} color="#000" />             
-                </TouchableOpacity>
-                <View style = {styles.clock}>
-                <DateTime></DateTime>
-                </View>
-                </View>
-
-                <ScrollView>
-                <View style = {styles.scrolls}>
-                {this.state.view === true ? <DataSensor/>: <DataControl/>}
-                    <View style= {styles.charDataValue}>
+                    <TouchableOpacity onPress={() => this.handleBack()}   style = {styles.filterIcon}>
                         
+                    <Icon  name="arrow-left" size={30} color="#000" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style = {styles.settingIcon}>
+                    <Icon  name="gear" size={30} color="#000" />             
+                    </TouchableOpacity>
+                    <View style = {styles.clock}>
+                    <DateTime></DateTime>
                     </View>
                 </View>
-            </ScrollView>
-            </View>
+
+                    <ScrollView>
+                    
+                        {this.state.view === true ? <DataSensor/>: <DataControl/>}
+                        {/* <View style= {styles.charDataValue}>
+                            
+                        </View> */}
+                    
+                    </ScrollView>
+              
+        </View>
         <View style = {styles.footer}>
-           <View style= {styles.coverButton}>
-           <View style= {styles.footerRow}>
-               <Button onPress={()=> this.handleView()} color={this.state.view? 'green': '#ccc'} title='View'/>
-            </View>
+            <View style= {styles.coverButton}>
             <View style= {styles.footerRow}>
-            <Button onPress={()=> this.handleAction()} color={this.state.view!=true? 'green': '#ccc'} title='Action'/>
+                <Button onPress={()=> this.handleView()} color={this.state.view? 'green': '#ccc'} title='View'/>
+              </View>
+              <View style= {styles.footerRow}>
+              <Button onPress={()=> this.handleAction()} color={this.state.view!=true? 'green': '#ccc'} title='Action'/>
+              </View>
             </View>
-           </View>
         </View>
       </View>
     );

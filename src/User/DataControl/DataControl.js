@@ -1,10 +1,12 @@
 import React from "react";
 import { View, StyleSheet, Text, Image, Switch } from "react-native";
 import MqttService from "../../Mqtt/MqttService";
-import {systemUrl, url} from "../../Constant/Request"
+import {systemUrl, url} from "../../Constant/Request";
+import Loading from "../../common/Loading";
 
 const mqttService = new MqttService();
 const client = mqttService.getCLient();
+const topicSendControl = systemUrl+"/thisisdeviceid1"+ "/W" +"/L";
 
 export default class DataControl extends React.Component{
     constructor(props){
@@ -14,7 +16,8 @@ export default class DataControl extends React.Component{
             spinkklers: false,
             fan: false,
             lamp: false,
-            coverd: false
+            coverd: false,
+            isloading: false,
 
         }
     }
@@ -59,46 +62,56 @@ export default class DataControl extends React.Component{
     }
     callbackConnect() {
         console.log("connect Succes");
-        mqttService.subscribeTopic(`${systemUrl}`+"/#");
+        mqttService.subscribeTopic(`${systemUrl}`+"/thisisdeviceid1"+"/#");
+        
         // mqttService.subscribeTopic(`${systemUrl}`+`${this.state.device}`+"/#");
     }
     SpinkklersHandle = () => {
         if(this.state.spinkklers){
-          this.setState({spinkklers: false})
-          
+
+          mqttService.sendMessage(topicSendControl+"/IsOnWater", "0");  
+
         }
         else {
-          this.setState({spinkklers: true})
+          
+          mqttService.sendMessage(topicSendControl+"/IsOnWater", "1");
 
         }
       }
     LampHandle = () => {
         if(this.state.lamp){
-          this.setState({lamp: false})
+          
+          mqttService.sendMessage(topicSendControl+"/IsOnLamp", "0");
+
           
         }
         else {
-          this.setState({lamp: true})
+          
+          mqttService.sendMessage(topicSendControl+"/IsOnLamp", "1");
 
         }
       }
       FanHandle = () => {
         if(this.state.fan){
-          this.setState({fan: false})
+        
+          mqttService.sendMessage(topicSendControl+"/IsOnFan", "0");
           
         }
         else {
-          this.setState({fan: true})
+         
+          mqttService.sendMessage(topicSendControl+"/IsOnFan", "1");
 
         }
       }
       Coverdhandle = () => {
         if(this.state.coverd){
-          this.setState({coverd: false})
+         
+          mqttService.sendMessage(topicSendControl+"/IsOnCover", "0");
           
         }
         else {
-          this.setState({coverd: true})
+         
+          mqttService.sendMessage(topicSendControl+"/IsOnCover", "1");
 
         }
       }
@@ -109,6 +122,7 @@ export default class DataControl extends React.Component{
 
         return( 
             <View style= {styles.tableDataValue}>
+            <Loading isLoading={this.state.isloading}/>
             <View style = {styles.row}>
                 <View style = {styles.dataValue}>
                     <Image style ={{width:30, height: 30}} source={require('../../../assets/water.jpg')}/>

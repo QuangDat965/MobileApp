@@ -3,13 +3,9 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
-  Animated,
   TouchableOpacity,
   Alert,
-  ActivityIndicator,
-  ToastAndroid,
 } from "react-native";
 import url from "../Constant/Request";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -41,7 +37,7 @@ export default class LoginPageComponent extends Component {
         Authorization: "Bearer " + "",
       },
       body: JSON.stringify({
-        email: this.state.email,
+        userName: this.state.email,
         password: this.state.password,
       }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
     })

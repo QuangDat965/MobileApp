@@ -35,23 +35,23 @@ export default class DataSensor extends React.Component{
     onMessageArrived(message) {
        
         var topic = message.topic.split('/');
-        if(topic[3]=="Temperature"){
+        if(topic[3]=="temperature"){
             this.setState({Tempature: message.payloadString})
         }
-        if(topic[3]=="Moisture"){
+        if(topic[3]=="moisture"){
             this.setState({Moisture: message.payloadString})
         }
-        if(topic[3]=="Humidity"){
+        if(topic[3]=="humidity"){
             this.setState({Humudity: message.payloadString})
         }
-        if(topic[3]=="Brightness"){
+        if(topic[3]=="brightness"){
             this.setState({Brightness: message.payloadString})
         }
        
     }
     callbackConnect() {
         console.log("connect Succes");
-        mqttService.subscribeTopic(`${systemUrl}`+"/#");
+        mqttService.subscribeTopic(`${systemUrl}`+"/thisisdeviceid1"+"/#");
         // mqttService.subscribeTopic(`${systemUrl}`+`${this.state.device}`+"/#");
     }
     componentWillUnmount() {

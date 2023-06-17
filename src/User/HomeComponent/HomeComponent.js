@@ -5,7 +5,6 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  Animated,
   TouchableOpacity,
   Alert,
   ScrollView,
@@ -49,29 +48,30 @@ export default class HomeComponent extends Component {
       userinfor: {},
     };
   }
+
   componentDidMount() {}
 
   fetchUser = async () => {
-    fetch(url + "Auth/getinfor", {
-      method: "POST", //phương thức request
-      headers: {
-        //header của request
-        "Content-Type": "application/json",
-        // Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-      },
-      body: JSON.stringify({
-        // token: await AsyncStorage.getItem("token"),
-        token: await AsyncStorage.getItem("token"),
-      }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        this.setState({ userinfor: json.data });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    // fetch(url + "Auth/getinfor", {
+    //   method: "POST", //phương thức request
+    //   headers: {
+    //     //header của request
+    //     "Content-Type": "application/json",
+    //     // Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
+    //   },
+    //   body: JSON.stringify({
+    //     // token: await AsyncStorage.getItem("token"),
+    //     token: await AsyncStorage.getItem("token"),
+    //   }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
+    // })
+    //   .then((response) => response.json())
+    //   .then((json) => {
+    //     console.log(json);
+    //     this.setState({ userinfor: json.data });
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
   };
   handleController = (number) => {
     if (number == 1) {
@@ -203,13 +203,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   container: {
-    padding: 8,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F3FBFB",
-    width: "100%",
-    height: "100%",
   },
   header: {
     width: "100%",
@@ -227,13 +224,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footer: {
-    width: "95%",
+    width: "100%",
     height: "15%",
     backgroundColor: "F3FBFB",
   },
   text: {
     fontFamily: "sans-serif",
-    fontWeight: 800,
+    fontWeight: '800',
     color: "#fff",
     fontSize: 16,
   },
@@ -255,7 +252,7 @@ const styles = StyleSheet.create({
   },
   boxname: {
     marginLeft: 100,
-    fontWeight: 800,
+    fontWeight: "800",
     fontFamily: "sans-serif",
   },
   itemList: {
@@ -285,5 +282,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
   },
-  itemTitle: {},
 });
