@@ -195,6 +195,18 @@ export  const styles = StyleSheet.create({
     borderRadius: 7
 
   },
+  fBackIcon: {
+    position: 'absolute',
+    left: 20,
+    top:5,
+    backgroundColor: '#ccc',
+    width: 40,
+    height: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 7
+
+  },
   settingIcon: {
     position: 'absolute',
     right: 10,
@@ -305,6 +317,36 @@ export  const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderStyle: 'solid',
     backgroundColor: "#ccf",
-    margin: 5
+    margin: 5,
+    minHeight: 60,
+    backgroundColor:'#ccc',
+    alignItems:'center',
   },
+  checkBoxActive: {
+    width:30,
+    height:30,
+    backgroundColor:'red'
+  
+  },
+  checkBoxNoActive: {
+
+  
+  }
+  ,
+  checkBoxDevice: {
+    width:40,
+    height:40,
+    borderColor:"#fff",
+    borderWidth:1,
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems:'center',
+    left:0
+  },
+  textBoxDevice: {
+    position: 'absolute',
+    left:50,
+    flex:1
+  },
+
 });

@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Button,
   Image,
   ScrollView,
   TextInput,
@@ -19,7 +18,6 @@ class ViewFarmComponent extends Component {
     this.state = {
       search: "",
       filter: 0,
-      visible: false,
       farms: [],
       modelAdd: false,
       farmName: '',
@@ -112,21 +110,21 @@ class ViewFarmComponent extends Component {
                   <Text></Text>
                   <TextInput
                       style={styles.addInput}
-                      placeholder="Name Farm"
+                      placeholder=" Name Farm"
                       onChangeText={(text) => this.setState({ farmName: text })}
                       value={this.state.farmName}
                       />
                   
                   <TextInput
                       style={styles.addInput}
-                      placeholder="Decription"
+                      placeholder=" Decription"
                       onChangeText={(text) => this.setState({ farmDesc: text })}
                       value={this.state.farmDesc}
                       />
                   
                   <TextInput
                       style={styles.addInput}
-                      placeholder="DevcieId"
+                      placeholder=" DevcieId"
                       value={this.state.farmAdress}
                       onChangeText={(text) => this.setState({ farmAdress: text })}
                       />
@@ -150,40 +148,28 @@ class ViewFarmComponent extends Component {
             />
           </View>
           <View style={styles.body}>
-            <View style={styles.optionNav}>
-              <TouchableOpacity style={styles.searchBar}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Search"
-                  onChangeText={(text) => this.setState({ search: text })}
-                  onChange={this.callApi}
-                />
-                <Icon
-                  style={styles.searchIcon}
-                  name="search"
-                  size={30}
-                  color="#000"
-                  onPress={this.callApi}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style = {styles.filterIcon}>
-              <Icon  name="filter" size={30} color="#000" />
-            </TouchableOpacity>
-            <TouchableOpacity style = {styles.settingIcon}>
-            <Icon  name="gear" size={30} color="#000" />
-
-              </TouchableOpacity>
-              {/* <TouchableOpacity style={styles.filterIcon} onPress={this.handleShow}>
-                <Icon name="filter" size={30} color="#000" />
-              </TouchableOpacity>
-              <Modal visible={this.state.visible} onShow={this.handleShow}>
-                <View>
-                  <Text>This is a modal</Text>
-                </View>
-              </Modal>
-              <TouchableOpacity style={styles.settingIcon}>
-                <Icon name="gear" size={30} color="#000" />
-              </TouchableOpacity> */}
+              <View style={styles.optionNav}>
+                <TouchableOpacity style={styles.searchBar}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Search"
+                    onChangeText={(text) => this.setState({ search: text })}
+                    onChange={this.callApi}
+                  />
+                  <Icon
+                    style={styles.searchIcon}
+                    name="search"
+                    size={30}
+                    color="#000"
+                    onPress={this.callApi}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity style = {styles.filterIcon}>
+                <Icon  name="filter" size={30} color="#000" />
+                </TouchableOpacity>
+                <TouchableOpacity style = {styles.settingIcon}>
+                <Icon  name="gear" size={30} color="#000" />
+                </TouchableOpacity>
             </View>
 
             <ScrollView>
@@ -216,7 +202,6 @@ class ViewFarmComponent extends Component {
                     <Icon  name="arrow-left" size={30} color="#000" />
           </TouchableOpacity>
             <View style={styles.footerCirle}></View>
-            <View style={styles.footerRec}></View>
             <TouchableOpacity onPress={()=>this.setState({modelAdd:true})}
               style={styles.iconPlus}
               
@@ -271,7 +256,6 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   addInput: {
-   
     width: '80%',
     height: 40,
     borderRadius: 5,
@@ -341,14 +325,15 @@ const styles = StyleSheet.create({
     // display: 'none'
   },
   backIcon: {
-    position: 'absolute',
-    right: 60,
     backgroundColor: '#ccc',
     width: 40,
     height: '80%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 7
+    borderRadius: 7,
+    position: 'absolute',
+    left: 20,
+    top: 5
   },
   backHome: {
     width: 40,
@@ -366,8 +351,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '10%',
     position: 'relative',
-    alignItems: 'center',
-    backgroundColor: '#565656'
+    backgroundColor: '#565656',
+    alignItems: 'center'
   },
 
   footerCirle: {
@@ -411,43 +396,44 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   optionNav: {
-    backgroundColor: "",
+    paddingLeft: 20,
+    paddingRight: 20,
     flexDirection: "row",
     height: 50,
-    justifyContent: "center",
     borderRadius: 5,
+    alignItems: 'center',
+    marginBottom:3
   },
   searchBar: {
-    flexDirection: "row",
-    width: "80%",
+    height:"80%",
+    width: 180,
+    marginRight:4
   },
   input: {
     backgroundColor: "#ccc",
-    width: "60%",
     borderRadius: 15,
-    marginLeft: 10,
-    height: "80%",
-    position: "absolute",
+    height: "100%",
+    width: "100%",
     textAlign: "left",
-    paddingLeft: 50,
+    paddingLeft:50
   },
   searchIcon: {
-    marginLeft: 20,
+    marginLeft: 10,
     position: "absolute",
+    width: 30,
+    height:30,
+    top:5
   },
   filterIcon: {
-    position: "absolute",
-    right: 60,
     backgroundColor: "#ccc",
     width: 40,
     height: "80%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 7,
+    marginRight: 4
   },
   settingIcon: {
-    position: "absolute",
-    right: 10,
     backgroundColor: "#ccc",
     width: 40,
     height: "80%",

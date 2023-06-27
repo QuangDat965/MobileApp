@@ -21,11 +21,6 @@ export default class LoginPageComponent extends Component {
     };
   }
   componentDidMount() {
-    // Animated.timing(this.state.animatedValue, {
-    //   toValue: 300, // giá trị cuối của animatedValue là 300
-    //   duration: 10000, // thời gian thực hiện animation là 2 giây
-    //   useNativeDriver: true, // để sử dụng native driver cho performance tốt hơn
-    // }).start();
   }
   callApi() {
     this.setState({ isLoading: true });
@@ -37,8 +32,8 @@ export default class LoginPageComponent extends Component {
         Authorization: "Bearer " + "",
       },
       body: JSON.stringify({
-        userName: this.state.email,
-        password: this.state.password,
+        "userName": this.state.email,
+        "password": this.state.password,
       }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
     })
       .then((response) => response.json())

@@ -17,14 +17,11 @@ class  ViewSmallholdingComponent extends Component {
      zoneName: '',
      modelDevice: false,
      devices : [],
-     deviceId : '',
-     zoneId: '',
-     zoneClick: '',
-     zoneSelected: '',
-     choseOndevice: '',
 
      deviceSensor: [],
-     deviceControl: []
+     deviceControl: [],
+
+     selectedDevice:[],
      
     };
   }
@@ -64,12 +61,21 @@ class  ViewSmallholdingComponent extends Component {
     this.props.navigation.navigate('ViewFarmComponent')
     }
    handleSmallholding = (zoneId) =>{
-    if(this.state.zoneSelected==zoneId&&zoneId==this.state.choseOndevice){
+    
       this.props.navigation.navigate('DataDetailsComponent',{zoneId: zoneId});
-    }
+    
    }
    handleSelecDevice = (id) => {
-      this.setState({choseOndevice: id, modelDevice: false});
+    let arr = this.state.selectedDevice;
+    if(arr.includes(id)){
+      let newarr =arr.filter(item=> item!=id);
+      this.setState({selectedDevice:newarr})
+    }
+    else{
+      arr.push(id);
+      this.setState({selectedDevice:arr})
+    }  
+      
    }
    handleInsertDevice = async () => {
     
@@ -147,16 +153,22 @@ class  ViewSmallholdingComponent extends Component {
                 <ScrollView>
                   {this.state.deviceSensor.map((e,i)=> {
                     let name = e.deviceType ==1?"Cảm biến nhiệt độ": e.deviceId==2?"Cảm biến độ ẩm":e.deviceId==3?"Cảm biến mưa":"Thiết bị của tôi";
-                    return(<TouchableOpacity onPress={()=>this.handleSelecDevice(this.state.zoneSelected)} style={styles.deviceBox} key={i}>
-                        <Text>id :{e.id}- Name: {name}</Text>
-                    </TouchableOpacity>)
+                    return(<View   style={styles.deviceBox} key={i}>
+                      <TouchableOpacity onPress={()=>this.handleSelecDevice(e.id)} style={styles.checkBoxDevice}>
+                        <View style={this.state.selectedDevice.includes(e.id)?styles.checkBoxActive:""}></View>
+                      </TouchableOpacity>
+                        <View style={styles.textBoxDevice}>
+                          <Text>id :{e.id}</Text>
+                          <Text>Name :{name}</Text>
+                        </View>
+                    </View>)
                   })}
                 </ScrollView>
             </View>
             <View style={styles.mDFooter}>
-              {/* <TouchableOpacity onPress={()=> this.handleInsertDevice()} style={styles.mDFooter_Save}>
+              <TouchableOpacity onPress={()=> this.handleInsertDevice()} style={styles.mDFooter_Save}>
                 <Text style = {{color: '#fff'}}>Save</Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -254,7 +266,7 @@ class  ViewSmallholdingComponent extends Component {
         <View style={styles.footer}>
             <View style= {styles.footerCirle}></View>
             
-            <TouchableOpacity onPress={() => this.handleBack()}   style = {styles.filterIcon}>
+            <TouchableOpacity onPress={() => this.handleBack()}   style = {styles.fBackIcon}>
                       
                   <Icon  name="arrow-left" size={30} color="#000" />
                   </TouchableOpacity>
