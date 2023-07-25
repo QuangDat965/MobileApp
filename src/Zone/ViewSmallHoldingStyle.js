@@ -68,21 +68,21 @@ export  const styles = StyleSheet.create({
     width:'100%',
     height: 50,
     backgroundColor: "#ccc",
-
+    borderColor: '#000',
+    borderBottomWidth: 2,
   },
   closeIcon: {
-    width: 50,
-    height: 50,
-    borderColor: '#ccc',
+    width: 40,
+    height: 40,
     borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#fff',
     borderRadius: 10,
-    borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
     right: 2,
+    bottom: 0,
+    backgroundColor:'red',
+    zIndex: 3
   },
 
   addForm: {
@@ -295,10 +295,11 @@ export  const styles = StyleSheet.create({
     
   },
   boxCloseDevice: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     position: 'absolute',
     right: 0,
+    bottom: 0
     
   },
   mDFooter_Save: {

@@ -102,8 +102,14 @@ class ViewFarmComponent extends Component {
           <View  style = {styles.addForm}>
                 <View style={styles.addHeader}>
                   <TouchableOpacity onPress={()=>this.setState({modelAdd: false})} style = {styles.closeIcon}>
-                      <Icon  name="close" size={50} color="red" />
+                      <Icon  name="close" size={40} color="#fff" />
                   </TouchableOpacity>
+                  <Text style={{
+                    fontSize: 20,
+                    fontWeight: '800',
+                    textAlign: 'center',
+                    lineHeight: 50
+                  }}>Add</Text>
                 </View>
 
                 <View style={styles.addBody}>
@@ -132,8 +138,8 @@ class ViewFarmComponent extends Component {
 
                 <View style={styles.addFooter}>
                   <View style={styles.addButton}>
-                  <TouchableOpacity onPress={()=> this.setState({modelAdd: false})} style={styles.addCancle}><Text style={{lineHeight:40}}>Cancle</Text></TouchableOpacity>
-                  <TouchableOpacity onPress={()=>this.handleSaveAddFarm()} style={styles.addSave}><Text style={{lineHeight:40, color: '#fff'}}>Save</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={()=> this.setState({modelAdd: false})} style={styles.addCancle}><Text style={{lineHeight:35, textAlign:'center'}}>Cancle</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={()=>this.handleSaveAddFarm()} style={styles.addSave}><Text style={{lineHeight:35, color: '#fff',textAlign:'center'}}>Save</Text></TouchableOpacity>
                   </View>
                 </View>
           </View>
@@ -232,7 +238,7 @@ const styles = StyleSheet.create({
   addCancle: {
     position: 'absolute',
     left: 0,
-    width: 50,
+    width: 60,
     height:40,
     backgroundColor: '#ccc',
     shadowColor: '#000',
@@ -245,15 +251,17 @@ const styles = StyleSheet.create({
   addSave: {
     position: 'absolute',
     right: 0,
-    width: 50,
+    width: 60,
     height:40,
     backgroundColor: 'blue',
     shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
     borderRadius: 8,
     elevation: 5,
+    textAlign: 'center',
+    alignContent:'center'
   },
   addInput: {
     width: '80%',
@@ -281,21 +289,22 @@ const styles = StyleSheet.create({
     width:'100%',
     height: 50,
     backgroundColor: "#ccc",
-
+    borderColor: '#000',
+    borderBottomWidth: 2,
   },
   closeIcon: {
-    width: 50,
-    height: 50,
-    borderColor: '#ccc',
+    width: 40,
+    height: 40,
     borderRadius: 10,
-    borderWidth: 2,
     borderColor: '#fff',
     borderRadius: 10,
-    borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
     right: 2,
+    backgroundColor: 'red',
+    bottom: 0,
+    zIndex: 3
   },
 
   addForm: {
@@ -468,6 +477,11 @@ const styles = StyleSheet.create({
     right: 10,
     marginRight: 50,
   },
+  titleHeader: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignContent: 'center'
+  }
 });
 
 export default ViewFarmComponent;

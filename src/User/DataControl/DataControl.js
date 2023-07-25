@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, Image, Switch } from "react-native";
 import MqttService from "../../Mqtt/MqttService";
-import {systemUrl, url} from "../../Constant/Request";
+import {systemUrl} from "../../Constant/Request";
 import Loading from "../../common/Loading";
 
 const mqttService = new MqttService();

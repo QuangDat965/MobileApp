@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Button, Image,
   ScrollView,TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTime from './DateTime';
-import DataRealTime from './DataRealTimeComponent';
-import ActionComponent from './ActionComponent';
 import DataSensor from '../User/DataSensor/DataSensor';
 import DataControl from '../User/DataControl/DataControl';
 
@@ -56,14 +53,8 @@ class  DataDetailsComponent extends Component {
                     <DateTime></DateTime>
                     </View>
                 </View>
-
-                    <ScrollView>
-                    
-                        {this.state.view === true ? <DataSensor/>: <DataControl/>}
-                        {/* <View style= {styles.charDataValue}>
-                            
-                        </View> */}
-                    
+                    <ScrollView>         
+                        {this.state.view === true ? <DataSensor/>: <DataControl/>}      
                     </ScrollView>
               
         </View>

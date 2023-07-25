@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class  DataRealTime extends Component {
     constructor(props) {
@@ -12,31 +11,6 @@ class  DataRealTime extends Component {
         };
       }
 
-      // componentDidMount() {      
-      //     this.interval = setInterval(() => {
-      //       fetch("http://192.168.1.248:83/api/SmallHolding/getdatasensorrealtime", {
-      //           method: 'GET', //phương thức request
-      //           headers: { //header của request
-      //             'Content-Type': 'application/json',
-      //             'Authorization': 'Bearer ' + "",
-      //           },
-      //            dữ liệu được gửi đi (trong trường hợp POST và PUT)
-      //         })
-      //         .then(response => response.json())
-      //         .then( async json => {
-      //           console.log('Response:', json);
-      //           this.setState({
-      //               tempature : json.tempature,
-      //               moisture: json.moisture,
-      //               humidity: json.humidity
-      //           })
-      //         })
-      //         .catch(error => {
-      //           Alert.alert('fetch Fail');
-      //           console.error('Error:', error);           
-      //         });
-      //     }, 5000);
-      // }
       componentWillUnmount() {
         // Xóa interval khi component unmount
         clearInterval(this.interval);

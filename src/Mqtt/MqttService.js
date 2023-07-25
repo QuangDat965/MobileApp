@@ -2,8 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import init from 'react_native_mqtt';
 import UUIDGenerator from 'react-native-uuid';
 
-
-
 init({
   size: 10000,
   storageBackend: AsyncStorage,
@@ -29,13 +27,9 @@ class MqttService  {
     });
 
   }
-  
-  
-
   checkConnect = () => {
     console.log(this.client.isConnected());
   }
-
   onFailure = (err) => {
     console.log('Connect failed!');
     console.log(err);
@@ -59,6 +53,5 @@ class MqttService  {
     return this.client;
   }
 }
-
 
 export default MqttService;

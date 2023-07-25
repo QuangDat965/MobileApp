@@ -2,12 +2,8 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity,
-  Alert,
-  ScrollView,
   Image,
 } from "react-native";
 import url from "../../Constant/Request";
@@ -49,30 +45,6 @@ export default class HomeComponent extends Component {
     };
   }
 
-  componentDidMount() {}
-
-  fetchUser = async () => {
-    // fetch(url + "Auth/getinfor", {
-    //   method: "POST", //phương thức request
-    //   headers: {
-    //     //header của request
-    //     "Content-Type": "application/json",
-    //     // Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-    //   },
-    //   body: JSON.stringify({
-    //     // token: await AsyncStorage.getItem("token"),
-    //     token: await AsyncStorage.getItem("token"),
-    //   }), //dữ liệu được gửi đi (trong trường hợp POST và PUT)
-    // })
-    //   .then((response) => response.json())
-    //   .then((json) => {
-    //     console.log(json);
-    //     this.setState({ userinfor: json.data });
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-  };
   handleController = (number) => {
     if (number == 1) {
       this.setState({ controller: 1 });
@@ -120,7 +92,7 @@ export default class HomeComponent extends Component {
                   >
                     <Image
                       source={e.Icon}
-                      style={{ width: "100%", height: "100%", aspectRatio: 1 }}
+                      style={{ width: "100%", height: "100%", aspectRatio: 1, borderRadius:10 }}
                     />
                   </TouchableOpacity>
                   <Text>{e.Title}</Text>
@@ -269,6 +241,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
+    overflow: 'hidden',
 
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },

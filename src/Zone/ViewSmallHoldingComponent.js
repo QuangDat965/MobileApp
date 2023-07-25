@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Button, Image,
+import { View, Text, TouchableOpacity, Image,
   ScrollView,TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -146,7 +146,7 @@ class  ViewSmallholdingComponent extends Component {
           <View style={styles.modelDevice}>
             <View style={styles.mDHeader}>
               <TouchableOpacity onPress = {()=>this.setState({modelDevice: false})} style={styles.boxCloseDevice} >
-                <Icon name='close' size={50} color="red"/>
+                <Icon name='close' size={40} color="red"/>
               </TouchableOpacity>
             </View>
             <View style={styles.mDBody}>
@@ -177,8 +177,15 @@ class  ViewSmallholdingComponent extends Component {
           <View  style = {styles.addForm}>
                 <View style={styles.addHeader}>
                   <TouchableOpacity onPress={()=>this.setState({modelAdd: false})} style = {styles.closeIcon}>
-                      <Icon  name="close" size={50} color="red" />
+                      <Icon  name="close" size={40} color="#fff" />
+                     
                   </TouchableOpacity>
+                  <Text style={{
+                        fontSize: 20,
+                        fontWeight: '800',
+                        textAlign: 'center',
+                        lineHeight: 50
+                      }}>Add</Text>
                 </View>
                 <View style={styles.addBody}>
                 <Text></Text>
@@ -206,8 +213,8 @@ class  ViewSmallholdingComponent extends Component {
                 </View>
                 <View style={styles.addFooter}>
                   <View style={styles.addButton}>
-                  <TouchableOpacity onPress={()=> this.setState({modelAdd: false})} style={styles.addCancle}><Text style={{lineHeight:40}}>Cancle</Text></TouchableOpacity>
-                  <TouchableOpacity onPress={()=>this.handleSaveAdd()} style={styles.addSave}><Text style={{lineHeight:40, color: '#fff'}}>Save</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={()=> this.setState({modelAdd: false})} style={styles.addCancle}><Text style={{lineHeight:35,textAlign:'center'}}>Cancle</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={()=>this.handleSaveAdd()} style={styles.addSave}><Text style={{lineHeight:35, color: '#fff',textAlign:'center'}}>Save</Text></TouchableOpacity>
                   </View>
                 </View>
           </View>
